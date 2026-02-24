@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemas Inteligentes | Automação</title>
+    <style>
+        :root {
+            --primary: #00f2fe;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-light: #f8fafc;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-light); line-height: 1.6; }
+        header { padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); letter-spacing: 1px; }
+        .hero { text-align: center; padding: 100px 20px; }
+        .hero h1 { font-size: 3rem; margin-bottom: 20px; }
+        .hero span { color: var(--primary); }
+        .hero p { font-size: 1.2rem; color: #cbd5e1; max-width: 600px; margin: 0 auto 30px auto; }
+        .btn { background: var(--primary); color: #000; padding: 12px 30px; border: none; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4); }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 50px 5%; }
+        .card { background: var(--card-bg); padding: 30px; border-radius: 10px; border: 1px solid #334155; transition: 0.3s; }
+        .card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .card h3 { color: var(--primary); margin-bottom: 15px; }
+        footer { text-align: center; padding: 30px; border-top: 1px solid #334155; margin-top: 50px; color: #94a3b8; }
+        #status-bar { margin-top: 20px; font-family: monospace; color: #4ade80; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Agentes.IA</div>
+        <nav>Sistema Operacional 1.0</nav>
+    </header>
+
+    <section class="hero">
+        <h1>Automatize negócios com <span>Agentes Autônomos</span></h1>
+        <p>Desenvolvemos soluções de inteligência artificial que trabalham 24/7 para escalar a sua operação e reduzir custos.</p>
+        <button class="btn" onclick="iniciarDiagnostico()">Iniciar Diagnóstico do Sistema</button>
+        <div id="status-bar"></div>
+    </section>
+
+    <section class="features">
+        <div class="card">
+            <h3>Navegação Web</h3>
+            <p>Nossos agentes conseguem acessar sites, extrair dados complexos e preencher formulários de maneira totalmente independente.</p>
+        </div>
+        <div class="card">
+            <h3>Integração de APIs</h3>
+            <p>Conectamos sua base de dados a modelos de linguagem de ponta, orquestrando fluxos de trabalho sem intervenção humana.</p>
+        </div>
+        <div class="card">
+            <h3>Análise Preditiva</h3>
+            <p>Processamento de grandes volumes de dados para identificar padrões de mercado, comportamento de usuários e oportunidades ocultas.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Agentes.IA. Desenvolvido para alta performance.</p>
+    </footer>
+
+    <script>
+        function iniciarDiagnostico() {
+            const btn = document.querySelector('.btn');
+            const status = document.getElementById('status-bar');
+            
+            btn.innerText = "Processando...";
+            btn.style.background = "#4ade80";
+            btn.disabled = true;
+
+            let passos = [
+                "Iniciando varredura do sistema...",
+                "Conectando aos nós da rede neural...",
+                "Verificando integridade dos dados...",
+                "Agente operacional. Sistema pronto para uso!"
+            ];
+
+            let delay = 0;
+            status.innerHTML = "";
+
+            passos.forEach((passo, index) => {
+                setTimeout(() => {
+                    status.innerHTML += `<br>> ${passo}`;
+                    if(index === passos.length - 1) {
+                        btn.innerText = "Diagnóstico Concluído";
+                        btn.style.background = "var(--primary)";
+                        btn.disabled = false;
+                    }
+                }, delay);
+                delay += 1000; // 1 segundo de intervalo entre cada mensagem
+            });
+        }
+    </script>
+</body>
+</html>
