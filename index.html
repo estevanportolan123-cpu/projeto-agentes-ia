@@ -3,96 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistemas Inteligentes | Automação</title>
+    <title>Painel de Gestão Operacional</title>
     <style>
         :root {
-            --primary: #00f2fe;
-            --bg-dark: #0f172a;
-            --card-bg: #1e293b;
-            --text-light: #f8fafc;
+            --bg-dark: #0f172a; --panel-bg: #1e293b; --primary: #3b82f6;
+            --success: #10b981; --danger: #ef4444; --text: #f8fafc;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text-light); line-height: 1.6; }
-        header { padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); letter-spacing: 1px; }
-        .hero { text-align: center; padding: 100px 20px; }
-        .hero h1 { font-size: 3rem; margin-bottom: 20px; }
-        .hero span { color: var(--primary); }
-        .hero p { font-size: 1.2rem; color: #cbd5e1; max-width: 600px; margin: 0 auto 30px auto; }
-        .btn { background: var(--primary); color: #000; padding: 12px 30px; border: none; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4); }
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 50px 5%; }
-        .card { background: var(--card-bg); padding: 30px; border-radius: 10px; border: 1px solid #334155; transition: 0.3s; }
-        .card:hover { border-color: var(--primary); transform: translateY(-5px); }
-        .card h3 { color: var(--primary); margin-bottom: 15px; }
-        footer { text-align: center; padding: 30px; border-top: 1px solid #334155; margin-top: 50px; color: #94a3b8; }
-        #status-bar { margin-top: 20px; font-family: monospace; color: #4ade80; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text); padding: 2rem; }
+        
+        .container { max-width: 1000px; margin: 0 auto; }
+        header { border-bottom: 2px solid #334155; padding-bottom: 1rem; margin-bottom: 2rem; }
+        h1 { font-size: 2rem; color: var(--primary); }
+        
+        .dashboard { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; }
+        @media (max-width: 768px) { .dashboard { grid-template-columns: 1fr; } }
+        
+        .panel { background: var(--panel-bg); padding: 1.5rem; border-radius: 8px; border: 1px solid #334155; }
+        .panel h2 { margin-bottom: 1rem; font-size: 1.2rem; }
+        
+        /* Formulário */
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #94a3b8; }
+        input, select { 
+            width: 100%; padding: 0.8rem; border-radius: 4px; border: 1px solid #475569;
+            background: var(--bg-dark); color: var(--text); outline: none;
+        }
+        input:focus, select:focus { border-color: var(--primary); }
+        
+        button { 
+            width: 100%; padding: 0.8rem; border: none; border-radius: 4px;
+            font-weight: bold; cursor: pointer; transition: 0.2s;
+        }
+        .btn-primary { background: var(--primary); color: white; margin-top: 1rem; }
+        .btn-primary:hover { background: #2563eb; }
+        
+        /* Tabela de Dados */
+        .data-list { display: flex; flex-direction: column; gap: 1rem; }
+        .data-card { 
+            background: var(--bg-dark); padding: 1rem; border-radius: 6px; 
+            border-left: 4px solid var(--primary); display: flex; justify-content: space-between;
+            align-items: center;
+        }
+        .data-card.status-inativo { border-left-color: var(--danger); opacity: 0.7; }
+        .data-info h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
+        .data-info p { font-size: 0.85rem; color: #94a3b8; }
+        
+        .actions button { width: auto; padding: 0.5rem 1rem; font-size: 0.8rem; margin-left: 0.5rem; }
+        .btn-delete { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid var(--danger); }
+        .btn-delete:hover { background: var(--danger); color: white; }
     </style>
 </head>
 <body>
 
+<div class="container">
     <header>
-        <div class="logo">Agentes.IA</div>
-        <nav>Sistema Operacional 1.0</nav>
+        <h1>Sistema Central v1.0</h1>
+        <p>Gestão de Registros e Ativos do Banco de Dados</p>
     </header>
 
-    <section class="hero">
-        <h1>Automatize negócios com <span>Agentes Autônomos</span></h1>
-        <p>Desenvolvemos soluções de inteligência artificial que trabalham 24/7 para escalar a sua operação e reduzir custos.</p>
-        <button class="btn" onclick="iniciarDiagnostico()">Iniciar Diagnóstico do Sistema</button>
-        <div id="status-bar"></div>
-    </section>
-
-    <section class="features">
-        <div class="card">
-            <h3>Navegação Web</h3>
-            <p>Nossos agentes conseguem acessar sites, extrair dados complexos e preencher formulários de maneira totalmente independente.</p>
+    <div class="dashboard">
+        <div class="panel">
+            <h2>Novo Registro</h2>
+            <form id="dataForm">
+                <div class="form-group">
+                    <label for="nome">Nome do Item / Agente</label>
+                    <input type="text" id="nome" required placeholder="Ex: Agente Financeiro">
+                </div>
+                <div class="form-group">
+                    <label for="categoria">Categoria</label>
+                    <select id="categoria">
+                        <option value="Automação">Automação IA</option>
+                        <option value="Inventário">Inventário Físico</option>
+                        <option value="Cliente">Cliente/Lead</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status Operacional</label>
+                    <select id="status">
+                        <option value="Ativo">Ativo e Rodando</option>
+                        <option value="Inativo">Inativo / Pausado</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Salvar no Banco de Dados</button>
+            </form>
         </div>
-        <div class="card">
-            <h3>Integração de APIs</h3>
-            <p>Conectamos sua base de dados a modelos de linguagem de ponta, orquestrando fluxos de trabalho sem intervenção humana.</p>
+
+        <div class="panel">
+            <h2>Registros Atuais (<span id="totalItems">0</span>)</h2>
+            <div class="data-list" id="dataList">
+                </div>
         </div>
-        <div class="card">
-            <h3>Análise Preditiva</h3>
-            <p>Processamento de grandes volumes de dados para identificar padrões de mercado, comportamento de usuários e oportunidades ocultas.</p>
-        </div>
-    </section>
+    </div>
+</div>
 
-    <footer>
-        <p>&copy; 2026 Agentes.IA. Desenvolvido para alta performance.</p>
-    </footer>
+<script>
+    // ARQUITETURA DE BANCO DE DADOS LOCAL (LocalStorage)
+    const form = document.getElementById('dataForm');
+    const dataList = document.getElementById('dataList');
+    const totalItems = document.getElementById('totalItems');
 
-    <script>
-        function iniciarDiagnostico() {
-            const btn = document.querySelector('.btn');
-            const status = document.getElementById('status-bar');
-            
-            btn.innerText = "Processando...";
-            btn.style.background = "#4ade80";
-            btn.disabled = true;
+    // Inicializa o banco de dados (lê o que já existe ou cria um array vazio)
+    let bancoDeDados = JSON.parse(localStorage.getItem('sistema_db')) || [];
 
-            let passos = [
-                "Iniciando varredura do sistema...",
-                "Conectando aos nós da rede neural...",
-                "Verificando integridade dos dados...",
-                "Agente operacional. Sistema pronto para uso!"
-            ];
+    // Função CREATE (Salvar novo dado)
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Impede a página de recarregar
+        
+        const novoRegistro = {
+            id: Date.now(), // Gera um ID único baseado no tempo
+            nome: document.getElementById('nome').value,
+            categoria: document.getElementById('categoria').value,
+            status: document.getElementById('status').value,
+            data: new Date().toLocaleDateString('pt-BR')
+        };
 
-            let delay = 0;
-            status.innerHTML = "";
+        bancoDeDados.push(novoRegistro);
+        salvarNoBanco();
+        form.reset(); // Limpa o formulário
+        renderizarInterface(); // Atualiza a tela
+    });
 
-            passos.forEach((passo, index) => {
-                setTimeout(() => {
-                    status.innerHTML += `<br>> ${passo}`;
-                    if(index === passos.length - 1) {
-                        btn.innerText = "Diagnóstico Concluído";
-                        btn.style.background = "var(--primary)";
-                        btn.disabled = false;
-                    }
-                }, delay);
-                delay += 1000; // 1 segundo de intervalo entre cada mensagem
-            });
+    // Função DELETE (Apagar dado)
+    function deletarRegistro(id) {
+        // Filtra o banco removendo o item com o ID selecionado
+        bancoDeDados = bancoDeDados.filter(item => item.id !== id);
+        salvarNoBanco();
+        renderizarInterface();
+    }
+
+    // Função de Persistência
+    function salvarNoBanco() {
+        localStorage.setItem('sistema_db', JSON.stringify(bancoDeDados));
+    }
+
+    // Função READ (Renderizar dados na tela)
+    function renderizarInterface() {
+        dataList.innerHTML = ''; // Limpa a lista antes de desenhar
+        totalItems.innerText = bancoDeDados.length;
+
+        if (bancoDeDados.length === 0) {
+            dataList.innerHTML = '<p style="color: #64748b; text-align: center; padding: 2rem;">Nenhum registro encontrado no sistema.</p>';
+            return;
         }
-    </script>
+
+        // Percorre o banco de dados e desenha cada item
+        bancoDeDados.forEach(item => {
+            const statusClass = item.status === 'Inativo' ? 'status-inativo' : '';
+            
+            const card = document.createElement('div');
+            card.className = `data-card ${statusClass}`;
+            card.innerHTML = `
+                <div class="data-info">
+                    <h3>${item.nome}</h3>
+                    <p><strong>Categoria:</strong> ${item.categoria} | <strong>Criado em:</strong> ${item.data}</p>
+                    <p><strong>Status:</strong> ${item.status}</p>
+                </div>
+                <div class="actions">
+                    <button class="btn-delete" onclick="deletarRegistro(${item.id})">Excluir</button>
+                </div>
+            `;
+            dataList.appendChild(card);
+        });
+    }
+
+    // Roda a renderização assim que o aplicativo abre
+    renderizarInterface();
+</script>
+
 </body>
 </html>
